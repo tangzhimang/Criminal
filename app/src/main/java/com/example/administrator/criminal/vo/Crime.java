@@ -44,4 +44,9 @@ public class Crime {
     public void setmTitle(String mTitle) {
         this.mTitle = mTitle;
     }
+
+    @Override
+    public String toString() {
+        return mTitle;
+    }
 }
