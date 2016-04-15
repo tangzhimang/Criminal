@@ -10,6 +10,8 @@ import com.example.administrator.criminal.R;
 import com.example.administrator.criminal.fragment.CrimeFragment;
 import com.example.administrator.criminal.utility.SingleFrameActivity;
 
+import java.util.UUID;
+
 public class CrimeActivity extends SingleFrameActivity implements CrimeFragment.OnFragmentInteractionListener{
 
 
@@ -21,6 +23,9 @@ public class CrimeActivity extends SingleFrameActivity implements CrimeFragment.
 
     @Override
     protected Fragment createFragment() {
-        return new CrimeFragment();
+        UUID crimeId = (UUID)getIntent().getSerializableExtra(CrimeFragment.EXTRA_CRIME_ID);
+        return CrimeFragment.newInstance(crimeId);
     }
+
+
 }

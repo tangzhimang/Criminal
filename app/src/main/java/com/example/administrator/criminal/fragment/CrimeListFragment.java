@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.administrator.criminal.R;
 import com.example.administrator.criminal.activity.CrimeActivity;
+import com.example.administrator.criminal.activity.CrimePagerActivity;
 import com.example.administrator.criminal.utility.CrimeLab;
 import com.example.administrator.criminal.vo.Crime;
 
@@ -30,6 +31,8 @@ public class CrimeListFragment extends Fragment {
 
     private ArrayList<Crime> mCrimes;
     private ListView CrimeListView;
+    private CrimeAdapter adapter;
+    private static final int REQUEST_CRIME = 1;
 
     public CrimeListFragment() {
         // Required empty public constructor
@@ -48,19 +51,37 @@ public class CrimeListFragment extends Fragment {
         View v = inflater.inflate(R.layout.crime_list_fragment, container, false);
         CrimeListView = (ListView)v.findViewById(R.id.CrimeListView);
         mCrimes = CrimeLab.get(getActivity()).getmCrimes();
-        CrimeAdapter adapter = new CrimeAdapter(getActivity(),R.layout.list_item_crime_adapter,mCrimes);
+        adapter = new CrimeAdapter(getActivity(),R.layout.list_item_crime_adapter,mCrimes);
         CrimeListView.setAdapter(adapter);
         CrimeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Crime crime = mCrimes.get(position);
-                Intent intent = new Intent(getActivity(), CrimeActivity.class);
-                intent.putExtra(CrimeFragment.EXTRA_CRIME_ID,crime.getmId());
-                startActivity(intent);
+                Intent intent = new Intent(getActivity(), CrimePagerActivity.class);
+                intent.putExtra(CrimeFragment.EXTRA_CRIME_ID, crime.getmId());
+                //startActivity(intent);
+                startActivityForResult(intent,REQUEST_CRIME);
                 //Toast.makeText(getActivity(),crime.getmTitle(),Toast.LENGTH_SHORT).show();
             }
         });
         return v;
+    }
+
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        adapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CRIME) {
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private class CrimeAdapter extends ArrayAdapter<Crime> {
